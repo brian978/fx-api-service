@@ -18,4 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/currencies', [App\Http\Controllers\Api\CurrenciesController::class, 'list']);
+Route::get('/currencies', function (Request $request) {
+    return response()->json(App\Models\Currency::all()->toArray());
+});
+
+Route::post('/convert/{base}/to/{quote}', [App\Http\Controllers\Api\ConvertorController::class, 'convert']);
