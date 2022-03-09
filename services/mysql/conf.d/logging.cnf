@@ -1,0 +1,10 @@
+[mariadb]
+enable_slow_query_log
+
+# enable the slow query log
+slow_query_log
+slow_query_log_file=/var/log/mysql/mariadb-slow.log
+
+# Enable logging by default to help find problems
+general-log
+general_log_file=/var/log/mysql/mariadb.log
