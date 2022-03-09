@@ -1,0 +1,16 @@
+.header-logo-image {
+    width: 80px;
+}
+
+.footer-social-links li {
+    display: inline;
+}
+
+.footer-social-links li a {
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.footer-social-icon {
+    height: 20px;
+}
