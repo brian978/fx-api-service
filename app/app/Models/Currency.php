@@ -62,22 +62,15 @@ class Currency extends Model
             return 0;
         }
 
-        return round($rate->value / $value, 4);
+        return round($rate->value * $value, 4);
     }
 
     public function convertTo(self $quote, float $value, \DateTime $dateTime): float
     {
-        /** @var Rate $baseRate */
-        $baseRate = Rate::query()
-            ->where('currency_id', $this->id)
-            ->where('created_at', $dateTime)
-            ->first();
-
-        if (null === $baseRate) {
+        $bridgeValue = $this->convert($value, $dateTime);
+        if (empty($bridgeValue)) {
             return 0;
         }
-
-        $bridgeValue = round($baseRate->value / $value, 4);
 
         // Getting the rate for the quote currency
         /** @var Rate $quoteRate */
