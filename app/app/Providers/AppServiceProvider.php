@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Psr\Log\LoggerAwareInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->resolving(
+            LoggerAwareInterface::class,
+            function (LoggerAwareInterface $object, Application $app) {
+                $object->setLogger($app->make('log'));
+            }
+        );
     }
 }

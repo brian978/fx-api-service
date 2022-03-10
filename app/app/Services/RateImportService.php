@@ -4,10 +4,14 @@ namespace App\Services;
 
 use App\Models\Currency;
 use App\Models\Rate;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DomCrawler\Crawler;
 
-class RateImportService
+class RateImportService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public string $fileUrl;
 
     private function loadRemoteXmlContents($url): ?string
@@ -33,6 +37,8 @@ class RateImportService
             $currency->created_at = new \DateTime();
             $currency->name = $name;
             $currency->save();
+
+            $this->logger->info('Created new currency: ' . $name);
         }
 
         return $currency;
@@ -40,6 +46,8 @@ class RateImportService
 
     public function import(): void
     {
+        $this->logger->info('Starting rates import for file: ' . $this->fileUrl);
+
         $crawler = new Crawler($this->loadRemoteXmlContents($this->fileUrl));
 
         $crawler->setDefaultNamespacePrefix('DataSet');
@@ -86,11 +94,14 @@ class RateImportService
                         $rate->created_at = $createdAt;
                         $rate->currency_id = $currency->id;
                         $rate->ref_currency_id = $refCurrency->id;
+
+                        $this->logger->info("Creating new rate entry for: $currency->name");
+                        $this->logger->info("Value of the rate entry is $value");
                     }
 
                     $rate->value = $value;
                     $rate->multiplier = $multiplier;
-                    
+
                     $rate->save();
                 }
             }
