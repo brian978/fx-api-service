@@ -1,0 +1,111 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BNR API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/convert/{base}/to/{quote}": {
+            "post": {
+                "tags": [
+                    "exchange"
+                ],
+                "summary": "Submit conversion request",
+                "operationId": "convert",
+                "parameters": [
+                    {
+                        "name": "base",
+                        "in": "path",
+                        "description": "Currency to convert FROM",
+                        "required": true,
+                        "example": "EUR"
+                    },
+                    {
+                        "name": "quote",
+                        "in": "path",
+                        "description": "Currency to convert TO",
+                        "required": true,
+                        "example": "RON"
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "example": "2022-01-03"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Conversion amount is required",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "value"
+                                ],
+                                "properties": {
+                                    "value": {
+                                        "type": "number",
+                                        "format": "number",
+                                        "example": "10"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "result": {
+                                            "type": "number",
+                                            "format": "float"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/currencies": {
+            "get": {
+                "tags": [
+                    "exchange"
+                ],
+                "summary": "List of supported currencies",
+                "operationId": "currencies",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "RON"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
