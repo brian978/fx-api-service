@@ -13,7 +13,7 @@ on:
   
 defaults:
   run:
-    working-directory: app
+    working-directory: app/
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:      
@@ -33,6 +33,10 @@ jobs:
       - name: Sync files to hosting
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
+          # Folder to upload from, must end with trailing slash /
+          local-dir: app/
+          # Path to upload to on the server. Must end with trailing slash /
+          server-dir: ./
           # ftp server
           server: ftp.apiservices.ro
           # ftp username
