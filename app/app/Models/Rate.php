@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
+ * @property ?int $id
  * @property \DateTimeInterface $created_at
  * @property \DateTimeInterface $updated_at
  * @property int $currency_id

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int $id
+ * @property ?int $id
  * @property \DateTimeInterface $created_at
  * @property \DateTimeInterface $updated_at
  * @property string $name
@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Currency extends Model
 {
     use HasFactory;
+
+    public const BRIDGE_CURRENCY = 'RON';
 
     /**
      * The attributes that are mass assignable.
@@ -53,6 +55,10 @@ class Currency extends Model
     public function rate(\DateTime $dateTime): null|Rate|Model
     {
         $dateTime->setTime(0, 0);
+
+        if ($this->name === self::BRIDGE_CURRENCY) {
+            return Rate::factory()->makeOne();
+        }
 
         /** @var null|Rate $rate */
         return Rate::query()

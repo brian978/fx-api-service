@@ -6,8 +6,6 @@ namespace App\Models;
 
 class Conversion
 {
-    public const BRIDGE_CURRENCY = 'RON';
-
     public \DateTimeInterface $date;
     public float $value = 0.0;
 
@@ -15,7 +13,7 @@ class Conversion
     {
         $this->date = $dateTime;
 
-        // Convert to bridge currency (RON)
+        // Get the rate of the currency against RON; RON does not have a rate against itself so this will be NULL
         $rate = $from->rate($dateTime);
         if (null === $rate) {
             return $this;
@@ -24,7 +22,7 @@ class Conversion
         $this->date = $rate->date();
 
         $bridgeValue = round($rate->value * $value, 4);
-        if (self::BRIDGE_CURRENCY === $to->name) {
+        if (Currency::BRIDGE_CURRENCY === $to->name) {
             $this->value = $bridgeValue;
             return $this;
         }
