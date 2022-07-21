@@ -8,7 +8,7 @@ start:
 	python3 scripts/run.py
 
 install:
-	cp app/.env.dev app/.env
+	cp app/.env.example app/.env
 	python3 scripts/cli.py composer install
 
 stop:
